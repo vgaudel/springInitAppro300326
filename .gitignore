@@ -19,7 +19,6 @@ node_modules/
 
 # Environment Files
 .env
-application.properties placeholder=
 application.yml placeholder=
 application.properties.example
 
@@ -44,3 +43,4 @@ coverage/
 
 # Backup Files
 *.bak
+/.metadata/
