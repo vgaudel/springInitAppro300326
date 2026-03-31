@@ -57,11 +57,11 @@ public class App {
 		EmployeService es1 = context.getBean("empService1", EmployeService.class);
 		System.out.println(es1);
 		
-		/*//getBeapermet de récupérer les instances des Beans depuis le conteneur
+		//getBeapermet de récupérer les instances des Beans depuis le conteneur
 		ArticleMapper m1 = context.getBean("mapper1", ArticleMapper.class); 
 		System.out.println(m1);
 		
-		ArticleRepository r1 = context.getBean("repository1", ArticleRepository.class);
+		/*ArticleRepository r1 = context.getBean("repository1", ArticleRepository.class);
 		System.out.println(r1);
 		
 		ArticleService s1 = context.getBean("service1",ArticleService.class);

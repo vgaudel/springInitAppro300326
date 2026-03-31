@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}" />
+<title>Exemple Boucle Thymeleaf</title>
+</head>
+<body>
+	<div class="container-fluid" id="articles-main-content">
+		<h1 class="text-center my-4">Gestion des articles</h1>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Nom</th>
+					<th>Prix</th>
+					<th>Description</th>
+					<th>Date de production</th>
+					<th>Emballage</th>
+
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="a : ${articles}">
+					<td th:text="${a.value.nom}"></td>
+					<td th:text="|${a.value.prix} €|"></td>
+					<td th:text="${a.value.description}"></td>
+					<td
+						th:text="${#temporals.format(a.value.dateProduction,'dd/MM/yyyy')}"></td>
+					<td
+						th:text="${#strings.capitalize(#strings.toLowerCase(a.value.emballage))}"></td>
+					<td><a class="btn btn-danger btn-sm mx-2">Supprimer</a> <a
+						th:href="@{/}" class="btn btn-success btn-sm mx-2">Modifier</a></td>
+
+				</tr>
+			</tbody>
+		</table>
+
+		<div th:insert="~{footer :: copy (1.1.0)}"></div>
+	</div>
+	<script th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js}"></script>
+
+</body>
+</html>

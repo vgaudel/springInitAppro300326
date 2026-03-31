@@ -10,11 +10,14 @@ import lombok.ToString;
 
 //Constructeurs
 @NoArgsConstructor // -> Création d'un constructeur sans paramètre
-@AllArgsConstructor // -> Création d'un constructeur avec un paramètre pour chaque variable d'instance
+@AllArgsConstructor // -> Création d'un constructeur avec un paramètre pour chaque variable
+					// d'instance
 //@NoArgsConstructor(access=AccessLevel.PRIVATE) // avec acces, on peut modifier la visibilité du constructeur (par défaut public)
 
-@Getter // -> Si on place @Getter sur la classe, un getter est créé pour chaque variable d'instance
-@Setter // -> Si on place @Setter sur la classe, un setter est créé pour chaque variable d'instance
+@Getter // -> Si on place @Getter sur la classe, un getter est créé pour chaque variable
+		// d'instance
+@Setter // -> Si on place @Setter sur la classe, un setter est créé pour chaque variable
+		// d'instance
 
 @EqualsAndHashCode(/* callSuper=true */)
 //@EqualsAndHashCode -> Par défaut, les méthodes equals et hashCode s'appliquent à toutes les variables d'instance 
@@ -30,17 +33,18 @@ public class Article {
 
 // @Getter -> On peut aussi placer les annotations @Getter et @Setter sur la variable d'instance
 // pour générer les getters et/ou les setters correspondants.
- @ToString.Exclude
- @Setter(value = AccessLevel.NONE) // On peut ne pas générer le setter et/ou le getter pour une variable d'instance
- // si les annotations sont placées sur la classe, en spécifiant AccessLevel.NONE dans l'annotation.
- private String description;
+	@ToString.Exclude
+	@Setter(value = AccessLevel.NONE) // On peut ne pas générer le setter et/ou le getter pour une variable d'instance
+	// si les annotations sont placées sur la classe, en spécifiant AccessLevel.NONE
+	// dans l'annotation.
+	private String description;
 
- @EqualsAndHashCode.Exclude
- private double prix;
+	@EqualsAndHashCode.Exclude
+	private double prix;
 
- // On peut ajouter ses propres constructeurs
- public Article(String description) {
-     this.description = description;
- }
-	
+	// On peut ajouter ses propres constructeurs
+	public Article(String description) {
+		this.description = description;
+	}
+
 }
