@@ -1,42 +1,66 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{main-layout::main-fragment(~{::title},~{::thymeleaf-main-content})}">
 <head>
 <meta charset="UTF-8">
-
+<link rel="stylesheet"
+	th:href="@{/webjars/bootstrap/5.3.8/css/bootstrap.min.css}" />
 <title>Exemple Thymeleaf</title>
 </head>
 <body>
-	<h1>Exemple Thymeleaf</h1>
+	<div class="container-fluid" th:fragment="thymeleaf-main-content">
+		<h1>Exemple Thymeleaf</h1>
 
-	<h4>Texte Statique</h4>
-	<div th:text="${val}">texte statique</div>
+		<h4>Texte Statique</h4>
+		<div th:text="${val}">texte statique</div>
 
-	<h4>Accès à un objet</h4>
-	<div th:text="${u1.prenom}">prenom</div>
-	<div th:text="${u1['nom']}">nom</div>
+		<h4>Accès à un objet</h4>
+		<div th:text="${u1.prenom}">prenom</div>
+		<div th:text="${u1['nom']}">nom</div>
 
-	<h4>Concaténation</h4>
-	<div th:text="'Prénom='+${u1.prenom}+' Nom='+${u1.nom}"></div>
-	<div th:text="|Prénom=${u1.prenom} Nom=${u1.nom}|"></div>
+		<h4>Concaténation</h4>
+		<div th:text="'Prénom='+${u1.prenom}+' Nom='+${u1.nom}"></div>
+		<div th:text="|Prénom=${u1.prenom} Nom=${u1.nom}|"></div>
 
-	<h4>Accès à un tableau</h4>
-	<div th:text="${tab[1]}"></div>
+		<h4>Accès à un tableau</h4>
+		<div th:text="${tab[1]}"></div>
 
-	<h4>Accès à une Map</h4>
-	<div th:text="${ages['John']}"></div>
+		<h4>Accès à une Map</h4>
+		<div th:text="${ages['John']}"></div>
 
-	<h4>URL</h4>
-	<div>
-		<a th:href="@{/exemple/testmodel}">exemple test model</a>
+		<h4>URL</h4>
+		<div>
+			<a th:href="@{/exemple/testmodel}">exemple test model</a>
+		</div>
+
+		<h4>Opérateur conditionnel</h4>
+		<div th:text="${val>0}? ${val*2}"></div>
+		<!-- if -->
+		<div th:text="${val>100}? ${val*10}: 'val n\'est supérieur à 100'"></div>
+		<!-- if .. else-->
+		<div th:text="${nexistepas}?: 'valeur par défaut'"></div>
+		<!-- Valeur par défaut -->
+
+		<h4 class="mt-2">Utility expression</h4>
+		<div th:text="${#temporals.year(dateJour)}"></div>
+		<div th:text="${#temporals.format(dateJour,'dd MM yyyy')}"></div>
+		<div th:text="${#strings.capitalize(phrase)}"></div>
+		<div th:text="${#strings.length(phrase)}"></div>
+
+		<h4 class="mt-2">Boucle</h4>
+		<ul>
+			<li th:each="t : ${tab}" th:text="${t}" />
+		</ul>
+		<ul>
+			<li th:each="t,sv : ${tab}"
+				th:text="|tab[${sv.index}]=${t} ${sv.count}/${sv.size}|" />
+		</ul>
+		<th:block th:each="t,sv : ${tab}">
+			<p th:text="|tab[${sv.index}]=${t} ${sv.count}/${sv.size}|"
+				th:class="${sv.even}?text-primary:text-secondary" />
+		</th:block>
+		
+		<div th:insert="~{footer :: copy(0)}"></div>
 	</div>
-
-	<h4>Opérateur conditionnel</h4>
-	<div th:text="${val>0}? ${val*2}"></div>
-	<!-- if -->
-	<div th:text="${val>100}? ${val*10}: 'val n\'est supérieur à 100'"></div>
-	<!-- if .. else-->
-	<div th:text="${nexistepas}?: 'valeur par défaut'"></div>
-	<!-- Valeur par défaut -->
-
+	<script th:src="@{/webjars/bootstrap/5.3.8/js/bootstrap.bundle.min.js}"></script>
 </body>
 </html>

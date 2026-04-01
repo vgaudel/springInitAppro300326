@@ -1,10 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{main-layout::main-fragment(~{::title},~{::thymeleaf-main-content})}">
 <head>
 <meta charset="UTF-8">
 <title>Hello world</title>
 </head>
 <body>
-    <h1>Hello World !!!</h1>
+
+	<div class="container-fluid" th:fragment="thymeleaf-main-content">
+	
+		<h1>Hello World !!!</h1>
+	
+	</div>
+
 </body>
 </html>

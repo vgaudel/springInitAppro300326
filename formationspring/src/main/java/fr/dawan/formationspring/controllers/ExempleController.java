@@ -1,10 +1,13 @@
 package fr.dawan.formationspring.controllers;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -34,7 +37,7 @@ public class ExempleController {
 	@RequestMapping("/exemple/thymeleaf")
 	public String testThymeleaf(Model model) {
 		
-		int val = -40;
+		int val = 60;
 		model.addAttribute("val", val);
 		
 		Utilisateur u1 = new Utilisateur("John", "Baguette");
@@ -53,6 +56,11 @@ public class ExempleController {
 		int v1=40;
 		model.addAttribute("v1", v1);
 		
+		model.addAttribute("dateJour", LocalDate.now());
+		model.addAttribute("phrase", "il est 16 heure");
+		
 		return "exemplethymeleaf";
+		
 	}
+    
 }
