@@ -3,7 +3,9 @@ package fr.dawan.formationspring.controllers;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import fr.dawan.formationspring.entities.Utilisateur;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 public class ExempleController {
@@ -62,5 +68,140 @@ public class ExempleController {
 		return "exemplethymeleaf";
 		
 	}
+	
+	@GetMapping(value="/testparam", params="id")
+	public String testParams(Model model) {
+		model.addAttribute("msg", "La requète contient un paramètre de requète id");
+		return "exemple";
+	}
+	@GetMapping(value="/testparam", params="id=42")
+	public String testParamsValue(Model model) {
+		model.addAttribute("msg", "La requète contient un paramètre de requète id égal à 42");
+		return "exemple";
+	}
+	
+	 
+    // @PathVaraible -> paramètre de chemin
+
+    @GetMapping("/testpath/{id}")
+    public String testPath(@PathVariable String id, Model model) {
+        model.addAttribute("msg", "Le paramètre de chemin id=" + id);
+        return "exemple";
+    }
+
+    @GetMapping("/testpathmulti/{id}/{action}")
+    public String testPathMulti(@PathVariable String id, @PathVariable String action, Model model) {
+        model.addAttribute("msg", "les paramètres de chemin id=" + id + ", action=" + action);
+        return "exemple";
+    }
+    
+    @GetMapping("/testpathmap/{id}/{nom}/action/{action}")
+    public String testPathMap(@PathVariable Map<String,String> pathVar,Model model) {
+        String str=String.format("les paramètres de chemin id=%s nom=%s action=%s", pathVar.get("id"),pathVar.get("nom"),pathVar.get("action"));
+        model.addAttribute("msg", str);
+        return "exemple";
+    }
+    
+    @GetMapping("/testpathamb/{id:[0-9]+}")
+    public String testPathAmb1(@PathVariable String  id,Model model) {
+        model.addAttribute("msg", "pathVariable id="+id);
+        return "exemple";
+    }
+    
+    @GetMapping("/testpathamb/{nom:[a-zA-Z ]+}")
+    public String testPathAmb2(@PathVariable String  nom,Model model) {
+        model.addAttribute("msg", "pathVariable nom="+nom);
+        return "exemple";
+    }
+    
+    // @RequestParam ->  paramètre de requête
+    
+    @GetMapping("/testparam")
+    public String testParam(@RequestParam String id,Model model) {
+        model.addAttribute("msg", "requestparam id="+id);
+        return "exemple";
+    }
+    
+    @GetMapping("/testparammulti")
+    public String testParam(@RequestParam String id,@RequestParam String nom,Model model) {
+        model.addAttribute("msg", "requestparam id="+id + " nom="+nom);
+        return "exemple";
+    }
+    
+    @GetMapping("/testparammap")
+    public String testParam(@RequestParam Map<String,String> paramMap,Model model) {
+        model.addAttribute("msg", "requestparam id="+paramMap.get("id") + " nom="+paramMap.get("nom"));
+        return "exemple";
+    }
+    
+    @GetMapping(value="/testparamamb", params="id")
+    public String testParaAmb1(@RequestParam String id,Model model) {
+        model.addAttribute("msg", "request param id="+id);
+        return "exemple";
+    }
+    
+    @GetMapping(value="/testparamamb", params="nom")
+    public String testParaAmb2(@RequestParam String nom,Model model) {
+        model.addAttribute("msg", "request param nom="+nom);
+        return "exemple";
+    }
+    
+    @GetMapping({"/testpathopt/{id}","/testpathopt"})
+    public String testPathOptionel1(@PathVariable(required=false) String id,Model model) {
+        model.addAttribute("msg", "pathvariable optionnel id="+id);
+        return "exemple";
+    }
+    @GetMapping({"/testpathopt2/{id}","/testpathopt2"})
+    public String testPathOptionel2(@PathVariable Optional<String> id,Model model) {
+        if(id.isEmpty()) {
+            model.addAttribute("msg", "vide");
+        }
+        else {
+            model.addAttribute("msg", "pathvariable optionnel id="+id.get());
+        }
+        return "exemple";
+    }
+    
+    @GetMapping("/testparamdefault")
+    public String testParamDefault(@RequestParam(defaultValue = "john doe") String nom,Model model) {
+        model.addAttribute("msg", "requestparam default nom="+nom);
+        return "exemple";
+    }
+    
+    // Conversion des paramètres
+    @GetMapping("/testconv/{id}")
+    public String testConv(@PathVariable long id,Model model) {
+        model.addAttribute("msg", "test conversion long id =" +id);
+        return "exemple";
+    }
+    
+    @GetMapping("/testconvdate/{date}")
+    public String testConvDate(@DateTimeFormat(pattern = "dd-MM-yyyy") @PathVariable LocalDate date,Model model) {
+        model.addAttribute("msg", date.toString());
+        return"exemple";
+    }
+    
+    //lier des objets 
+    @GetMapping("/testbindpath/{prenom}/{nom}")
+    public String testBindPath(Utilisateur u, Model model) {
+    	model.addAttribute("msg", u.toString());
+    	return "exemple";
+    }
+    @GetMapping("/testbindparam")
+    public String testBindParam(@ModelAttribute("user") Utilisateur u, Model model) {
+    	model.addAttribute("msg", u.toString());
+    	return "exemple";
+    }
+    
+    //redirection
+    @GetMapping("/testredirect")
+    public String testRedirect(){
+    	return "redirect:/hello";
+    }
+    
+    @GetMapping("/testforward")
+    public String testForward() {
+    	return "forward:/hello";
+    }
     
 }

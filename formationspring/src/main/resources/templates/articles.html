@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{main-layout::main-fragment(~{::title},~{::#articles-main-content})}">
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{main-layout::main-fragment(~{::title},~{::#articles-main-content})}">
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet"
@@ -10,7 +11,7 @@
 	<div class="container-fluid" id="articles-main-content">
 		<h1 class="text-center my-4">Gestion des articles</h1>
 
-		<table class="table">
+		<table class="table" th:if="${not #lists.isEmpty(articles)}">
 			<thead>
 				<tr>
 					<th>Nom</th>
@@ -18,20 +19,19 @@
 					<th>Description</th>
 					<th>Date de production</th>
 					<th>Emballage</th>
-
+					<th>Action</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="a : ${articles}">
-					<td th:text="${a.value.nom}"></td>
-					<td th:text="|${a.value.prix} €|"></td>
-					<td th:text="${a.value.description}"></td>
+					<td th:text="${a.nom}"></td>
+					<td th:text="|${a.prix} €|"></td>
+					<td th:text="${a.description}"></td>
+					<td th:text="${#temporals.format(a.dateProduction,'dd/MM/yyyy')}"></td>
 					<td
-						th:text="${#temporals.format(a.value.dateProduction,'dd/MM/yyyy')}"></td>
-					<td
-						th:text="${#strings.capitalize(#strings.toLowerCase(a.value.emballage))}"></td>
-					<td><a class="btn btn-danger btn-sm mx-2">Supprimer</a> <a
-						th:href="@{/}" class="btn btn-success btn-sm mx-2">Modifier</a></td>
+						th:text="${#strings.capitalize(#strings.toLowerCase(a.emballage))}"></td>
+					<td><a class="btn btn-danger btn-sm mx-2" th:href="@{/remove/{id}(id=${a.id})}">Supprimer</a> 
+					<a th:href="@{/}" class="btn btn-success btn-sm mx-2">Modifier</a></td>
 
 				</tr>
 			</tbody>

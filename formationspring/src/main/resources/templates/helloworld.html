@@ -10,7 +10,7 @@
 	<div class="container-fluid" th:fragment="thymeleaf-main-content">
 	
 		<h1>Hello World !!!</h1>
-	
+		<div th:text="${#temporals.format(today,'dd MMMM yyyy')}"></div>
 	</div>
 
 </body>

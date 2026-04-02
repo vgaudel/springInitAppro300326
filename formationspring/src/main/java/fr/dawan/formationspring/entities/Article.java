@@ -16,6 +16,8 @@ import lombok.ToString;
 @ToString
 public class Article {
 
+	private long id;	
+	
     private String nom;
     
     private double prix;

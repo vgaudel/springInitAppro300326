@@ -30,6 +30,9 @@
 		<h4>URL</h4>
 		<div>
 			<a th:href="@{/exemple/testmodel}">exemple test model</a>
+			<a th:href="@{/testparam(id=${val})}">exemple de paramètre de requète</a>
+			<a th:href="@{/testparam(id=42)}">exemple de paramètre de requète id à 42</a>
+			<a th:href="@{/testparam?id=42}">exemple de paramètre de requète id à 42</a>
 		</div>
 
 		<h4>Opérateur conditionnel</h4>
