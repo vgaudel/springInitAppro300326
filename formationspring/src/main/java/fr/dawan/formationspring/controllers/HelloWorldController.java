@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class HelloWorldController {
 
-	@GetMapping("/hello")
+	@GetMapping({"/hello","/"})
 	public String hello(Model model){
 		return "helloworld";
 	}

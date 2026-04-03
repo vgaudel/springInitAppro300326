@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace=~{main-layout::main-fragment(~{::title},~{::#adduser-main-content})}>
+<head>
+<meta charset="UTF-8">
+<title>Ajout Utilisateur</title>
+</head>
+<body>
+    <div class="container-fluid" id="adduser-main-content">
+        <form method="post" th:action="@{/users/add}" th:object="${userForm}">
+            <div class="mb-3">
+                <label for="prenom" class="form-label">Prénom</label>
+                <input type="text" th:field="*{prenom}" class="form-control" id="prenom" placeholder="Prénom" th:errorclass="is-invalid"/>
+                <p th:errors="*{prenom}" class="invalid-feedback"/>
+            </div>
+            <div class="mb-3">
+                <label for="nom" class="form-label">Nom</label>
+                <input type="text" th:field="*{nom}" class="form-control" id="nom" placeholder="Nom" th:errorclass="is-invalid"/>
+                  <p th:errors="*{nom}" class="invalid-feedback"/>
+            </div>
+            <div class="mb-3">
+                <label for="naissance" class="form-label">Date de Naissance</label>
+                <input type="date" th:field="*{naissance}" class="form-control" id="naissance" placeholder="Date de naissance" th:errorclass="is-invalid"/>
+                <p th:errors="*{naissance}" class="invalid-feedback"/>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" th:field="*{email}" class="form-control" id="email" placeholder="Email" th:errorclass="is-invalid"/>
+	           <p th:errors="*{email}" class="invalid-feedback"/>
+	            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Mot de passe</label>
+                <input type="password" th:field="*{password}" class="form-control" id="password" placeholder="Mot de passe" th:errorclass="is-invalid"/>
+                <p th:errors="*{password}" class="invalid-feedback"/>
+            </div>
+            <div class="mb-3">
+                <label for="confirm_password" class="form-label">Confirmation du mot de passe</label>
+                <input type="password" th:field="*{confirmationPassword}" class="form-control" id="confirm_password" placeholder="Mot de passe"/>
+                <p th:errors="*{confirmationPassword}" class="invalid-feedback"/>
+            </div>
+            <input type="submit" class="btn btn-primary" value="Confirmer"/>
+        </form>
+   
+    </div>
+</body>
+</html>

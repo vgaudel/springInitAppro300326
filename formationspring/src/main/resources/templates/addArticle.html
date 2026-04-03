@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{main-layout::main-fragment(~{::title},~{::#addarticle-main-content})}">
+<head>
+<meta charset="UTF-8">
+<title>Formulaire d'ajout d'un article</title>
+</head>
+<body>
+	<div class="container-fluid" id="addarticle-main-content">
+		<form method="post" th:action="@{/articles/add}"
+			th:object="${articleForm}">
+
+			<h1 class="text-center mb-5">Ajouter un article</h1>
+
+			<div class="mb-3">
+				<label for="nom" class="form-label">Nom</label> <input type="text"
+					th:field="*{nom}" class="form-control"
+					placeholder="Nom de l'article" id="nom" th:errorclass="is-invalid"></input>
+					<p th:errors=*{nom} class="invalid-feedback">
+			</div>
+			
+			<div class="mb-3">
+				<label for="prix" class="form-label">Prix</label> <input type="number"
+					th:field="*{prix}" class="form-control" step="0.01"
+					placeholder="Prix de l'article" id="prix"  th:errorclass="is-invalid"></input>
+					<p th:errors=*{prix} class="invalid-feedback">
+			</div>
+			
+			<div class="mb-3">
+				<label for="description" class="form-label">Description</label> <input type="text"
+					th:field="*{description}" class="form-control"
+					placeholder="Description de l'article" id="description"  th:errorclass="is-invalid"></input>
+					<p th:errors=*{description} class="invalid-feedback">
+			</div>
+			
+			<div class="mb-3">
+				<label for="dateProduction" class="form-label">Date de production</label> <input type="date"
+					th:field="*{dateProduction}" class="form-control"
+				 	id="dateProduction"  th:errorclass="is-invalid"></input>
+				 	<p th:errors=*{dateProduction} class="invalid-feedback">
+			</div>
+			
+			<div class="mb-3">
+				<select th:field="*{emballage}">
+					<option th:each="emb :${T(fr.dawan.formationspring.entities.Emballage).values()}"
+					th:value="${emb}" th:text="${#strings.capitalize(#strings.toLowerCase(emb))}"/>
+				</select>
+			</div>
+
+			<input class="btn btn-primary my-3" type="submit"
+				value="Ajouter un article" />
+		</form>
+	</div>
+</body>
+</html>

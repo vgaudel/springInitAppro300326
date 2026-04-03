@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace=~{main-layout::main-fragment(~{::title},~{::#users-main-content})}>
+<head>
+<meta charset="UTF-8">
+<title>Gestion des utilisateurs</title>
+</head>
+<body>
+	<div class="container-fluid" id="users-main-content">
+		<h1 class="text-center">Gestion des utilisateurs</h1>
+		<div>
+			<a th:href="@{/users/add}" class="btn btn-primary btn-sm mt-5">Ajouter un utilisateur</a>
+			<div th:if="${! #strings.isEmpty(msgCreatedUser)}" th:text=${msgCreatedUser} class="alert alert-primary">
+		</div>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Prénom</th>
+					<th>Nom</th>
+					<th>Email</th>
+					<th>Date de naissance</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="u : ${users}">
+					<td th:text="${u.prenom}"></td>
+					<td th:text="${u.nom}"></td>
+					<td th:text="${u.email}"></td>
+					<td th:text="${#temporals.format(u.naissance,'dd MMMM yyyy')}"></td>
+					<td>
+					    <a th:href="@{/users/remove/{id}(id=${u.id})}" class="btn btn-danger btn-sm mx-2">Supprimer</a>
+						<a th:href="@{/}" class="btn btn-success btn-sm mx-2">Modifier</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
