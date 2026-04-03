@@ -9,8 +9,12 @@
 </head>
 <body>
 	<div class="container-fluid" id="articles-main-content">
+		<form th:action="@{/logout}" method="post">
+			<button type="submit" class="btn btn-danger">Déconnexion</button>
+		</form>
 		<h1 class="text-center my-4">Gestion des articles</h1>
-
+		<div th:if="${! #strings.isEmpty(errorMessage)}"
+			th:text=${errorMessage} class="alert alert-primary"></div>
 		<table class="table" th:if="${not #lists.isEmpty(articles)}">
 			<thead>
 				<tr>
@@ -30,8 +34,9 @@
 					<td th:text="${#temporals.format(a.dateProduction,'dd/MM/yyyy')}"></td>
 					<td
 						th:text="${#strings.capitalize(#strings.toLowerCase(a.emballage))}"></td>
-					<td><a class="btn btn-danger btn-sm mx-2" th:href="@{/remove/{id}(id=${a.id})}">Supprimer</a> 
-					<a th:href="@{/}" class="btn btn-success btn-sm mx-2">Modifier</a></td>
+					<td><a class="btn btn-danger btn-sm mx-2"
+						th:href="@{/articles/remove/{id}(id=${a.id})}">Supprimer</a> <a
+						th:href="@{/}" class="btn btn-success btn-sm mx-2">Modifier</a></td>
 
 				</tr>
 			</tbody>

@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,12 +14,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import fr.dawan.formationspring.entities.Utilisateur;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 
 @Controller
+@SessionAttributes("utilisateur2")
 public class ExempleController {
 
 	@RequestMapping("/exemple")
@@ -204,4 +212,54 @@ public class ExempleController {
     	return "forward:/hello";
     }
     
+    // Cookies
+    
+    @GetMapping("/writecookie")
+    public String writeCookie(HttpServletResponse response) {
+    	Cookie cookie = new Cookie("testCookie","Valeur_de_test");
+    	cookie.setMaxAge(300);
+    	response.addCookie(cookie);
+    	return "redirect:/exemple";
+    }
+    
+    @GetMapping("/readcookie")
+    public String readCookie(@CookieValue(value="testCookie",defaultValue="Valeur par défaut") String value, Model model) {
+    	model.addAttribute("msg", "Cookie = "+value);
+    	return "exemple";
+    }
+    
+    //Session 
+    // 1 Session Jakarta EE
+    @GetMapping("/writesession1")
+    public String writeSession1(HttpServletRequest request){
+    	HttpSession session = request.getSession();
+    	session.setAttribute("utilisateur1", new Utilisateur("John", "Baguette"));
+    	return "redirect:/exemple";
+    }
+    
+    @GetMapping("/readsession1")
+    public String readsession1(HttpServletRequest request, Model model) {
+    	HttpSession session = request.getSession();
+    	Utilisateur u1 = (Utilisateur) session.getAttribute("utilisateur1");
+    	model.addAttribute("msg", "Session Jakarta EE " + u1);
+        return "exemple";
+    }
+    
+    //2 Session @SessionAttributes
+    @ModelAttribute("utilisateur2")
+    public Utilisateur initSession2() {
+        return new Utilisateur();
+    }
+    
+    @GetMapping("/writesession2")
+    public String writeSession2(Model model) {
+        model.addAttribute("utilisateur2", new Utilisateur("yves","roulo"));
+        return "redirect:/exemple";
+    }
+    
+    @GetMapping("/readsession2")
+    public String readSesion2(@ModelAttribute("utilisateur2") Utilisateur utilisateur2,Model model) {
+        model.addAttribute("msg", "session @SessionAttributes "+utilisateur2.toString());
+        return "exemple";
+    }
 }

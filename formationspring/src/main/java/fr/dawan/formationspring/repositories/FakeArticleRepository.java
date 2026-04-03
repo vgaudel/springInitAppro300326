@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.springframework.stereotype.Repository;
 
@@ -61,10 +62,10 @@ public class FakeArticleRepository {
 		}
 	}
 
-	public Article findById(long id) throws Exception {
+	public Article findById(long id) throws NoSuchElementException {
 		Article a = articlesDb.get(id);
 		if (a == null) {
-			throw new Exception("Article non trouvé");
+			throw new NoSuchElementException("Article non trouvé");
 		}
 		return a;
 	}

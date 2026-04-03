@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	th:replace=~{main-layout::main-fragment(~{::title},~{::#login-main-content})}>
+<head>
+<meta charset="UTF-8">
+<title>Login</title>
+</head>
+<body>
+	<div class="container-fluid" id="login-main-content">
+		<form method="post" th:action="@{/login}" th:object="${loginForm}">
+		<div th:if="${! #strings.isEmpty(errorMessage)}" th:text=${errorMessage} class="alert alert-primary"></div>
+			<div class="mb-3">
+				<label for="username" class="form-label">Email</label> <input
+					type="email" th:field="*{username}" class="form-control" id="username"
+					placeholder="Email" th:errorclass="is-invalid" />
+			</div>
+			
+			<div class="mb-3">
+				<label for="password" class="form-label">Mot de passe</label> <input
+					type="password" th:field="*{password}" class="form-control"
+					id="password" placeholder="Mot de passe" th:errorclass="is-invalid" />
+			</div>
+			<input type="submit" class="btn btn-primary" value="Confirmer" />
+		</form>
+
+	</div>
+</body>
+</html>

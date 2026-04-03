@@ -5,16 +5,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fr.dawan.formationspring.entities.Article;
 import fr.dawan.formationspring.entities.Emballage;
@@ -23,12 +27,13 @@ import fr.dawan.formationspring.repositories.FakeArticleRepository;
 import jakarta.validation.Valid;
 
 @Controller
+@RequestMapping("/articles")
 public class ArticleController {
 
 	@Autowired
 	private FakeArticleRepository repository;
 
-	@GetMapping("/articles")
+	@GetMapping
 	public String display(Model model) {
 
 		model.addAttribute("articles", repository.findAll());
@@ -36,8 +41,8 @@ public class ArticleController {
 		return "articles";
 	}
 
-	@GetMapping("/articles/{key}")
-	public String display(Model model, @PathVariable("key") Long key) throws Exception {
+	@GetMapping("/{key}")
+	public String display(Model model, @PathVariable("key") Long key) throws NoSuchElementException {
 
 		List<Article> articles = new ArrayList<Article>();
 
@@ -48,6 +53,12 @@ public class ArticleController {
 		return "articles";
 	}
 
+	@ExceptionHandler
+	public String noElementFound(NoSuchElementException ex, RedirectAttributes redirectAttributes) {
+		redirectAttributes.addFlashAttribute("errorMessage", "Article non trouvé");
+		return "redirect:/articles";
+	}
+	
 	@GetMapping("/remove/{id}")
 	public String remove(@PathVariable long id) {
 		try {
@@ -58,12 +69,12 @@ public class ArticleController {
 		return "redirect:/articles";
 	}
 
-	@GetMapping("/articles/add")
+	@GetMapping("/add")
 	public String addArticle(@ModelAttribute ArticleForm articleForm) {
 		return "addArticle";
 	}
 
-	@PostMapping("/articles/add")
+	@PostMapping("/add")
 	public ModelAndView addArticlePost(@Valid @ModelAttribute ArticleForm articleForm, BindingResult result) {
 		ModelAndView mdv= new ModelAndView();
 		if (result.hasErrors()) {

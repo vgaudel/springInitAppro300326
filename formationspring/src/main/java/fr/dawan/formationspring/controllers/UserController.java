@@ -1,6 +1,7 @@
 package fr.dawan.formationspring.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,7 +25,9 @@ public class UserController {
 
 	@Autowired
     private FakeUserRepository repository;
-    
+	@Autowired
+    private UserValidator userValidator;
+	
     @GetMapping
     public String getAll(Model model) {
         model.addAttribute("users", repository.findAll());
@@ -40,8 +43,8 @@ public class UserController {
     //public ModelAndView createUserPost(@Valid @ModelAttribute("userForm") UserForm userForm,BindingResult result) {
     public ModelAndView createUserPost(@ModelAttribute("userForm") UserForm userForm,BindingResult result, RedirectAttributes ra) {
         ModelAndView mdv=new ModelAndView();
-        
-        new UserValidator().validate(userForm, result);
+
+        this.userValidator.validate(userForm, result);
         
         if(result.hasErrors()) {
             mdv.addObject("userForm",userForm);
@@ -53,7 +56,7 @@ public class UserController {
             user.setNom(userForm.getNom());
             user.setEmail(userForm.getEmail());
             user.setNaissance(userForm.getNaissance());
-            user.setPassword(userForm.getPassword());
+            user.setPassword(new BCryptPasswordEncoder().encode(userForm.getPassword()));
             repository.save(user);
             ra.addFlashAttribute("msgCreatedUser", "L'utilisateur " + user.getNom() + "a bien été créé.");
             mdv.setViewName("redirect:/users");
